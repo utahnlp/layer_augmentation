@@ -1,4 +1,4 @@
-Implementation of the NLI model in our paper: [Augmenting Neural Networks with First-order Logic](https://svivek.com/research/publications/li2019augmenting.pdf)
+Implementation of the NLI model in our ACL 2019 paper: [Augmenting Neural Networks with First-order Logic](https://svivek.com/research/publications/li2019augmenting.pdf)
 ```
 @inproceedings{li2019augmenting,
       author    = {Li, Tao and Srikumar, Vivek},

@@ -1,4 +1,12 @@
-This repo holds the NLI model in the paper: Augmenting Neural Networks with First-order Logic.
+Implementation of the NLI model in our paper: [Augmenting Neural Networks with First-order Logic](https://svivek.com/research/publications/li2019augmenting.pdf)
+```
+@inproceedings{li2019augmenting,
+      author    = {Li, Tao and Srikumar, Vivek},
+      title     = {Augmenting Neural Networks with First-order Logic},
+      booktitle = {Proceedings of the 57th Annual Meeting of the Association for Computational Linguistics},
+      year      = {2019}
+  }
+```
 
 ## Prerequisites
 ```

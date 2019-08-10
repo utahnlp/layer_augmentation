@@ -32,7 +32,7 @@ class MulticlassLoss(torch.nn.Module):
 		loss = crit(log_p, gold[:])
 
 		# stats
-		self.num_correct += np.equal(pick_label(log_p.data), gold).sum()
+		self.num_correct += np.equal(pick_label(log_p.cpu().data), gold.cpu()).sum()
 		self.num_ex += batch_l
 
 		return loss

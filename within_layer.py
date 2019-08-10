@@ -39,6 +39,7 @@ class WithinLayer(torch.nn.Module):
 		if len(self.within_constr) != 0:
 			print('within-layer constraint enabled')
 
+	# DEPRECATED
 	def grow_rho(self, x):
 		rs = None
 		if self.opt.grow_rho == 'log':
@@ -96,8 +97,6 @@ class WithinLayer(torch.nn.Module):
 			self.shared.w_hit_cnt = (datt2.data.sum(-1).sum(-1) > 0.0).sum()
 
 		rho_w = self.rho_w
-		if self.opt.grow_rho != '':
-			rho_w = self.rho_w * Variable(self.grow_rho(self.shared.epoch+1), requires_grad=False)
 
 		constrained_score1 = score1 + rho_w * datt1
 		constrained_score2 = score2 + rho_w * datt2

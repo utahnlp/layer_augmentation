@@ -288,11 +288,11 @@ def main(arguments):
 	parser.add_argument('--sent1_test', help="Path to sent1 test data.",default = "test.sent1.txt")
 	parser.add_argument('--sent2_test', help="Path to sent2 test data.",default = "test.sent2.txt")
 	parser.add_argument('--label_test', help="Path to label test data.",default = "test.label.txt")
-	parser.add_argument('--dir', help="Path to the data dir",default = "./data/nli_aug/")
+	parser.add_argument('--dir', help="Path to the data dir",default = "./data/snli_1.0/")
 	
 	parser.add_argument('--batch_size', help="Size of each minibatch.", type=int, default=32)
 	parser.add_argument('--max_seq_l', help="Maximum sequence length. Sequences longer than this are dropped.", type=int, default=100)
-	parser.add_argument('--output', help="Prefix of the output file names. ", type=str, default = "data/nli_aug/snli")
+	parser.add_argument('--output', help="Prefix of the output file names. ", type=str, default = "data/snli_1.0/snli")
 	parser.add_argument('--shuffle', help="If = 1, shuffle sentences before sorting (based on source length).", type = int, default = 1)
 	parser.add_argument('--seed', help="The random seed", type = int, default = 1)
 	parser.add_argument('--glove', type = str, default = '')

@@ -6,7 +6,6 @@ from torch.autograd import Variable
 from holder import *
 from util import *
 from within_layer import *
-from backward_hooks import *
 
 class LocalAttention(torch.nn.Module):
 	def __init__(self, opt, shared):

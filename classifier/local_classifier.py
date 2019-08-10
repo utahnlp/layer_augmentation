@@ -7,7 +7,6 @@ from torch.autograd import Variable
 from holder import *
 from util import *
 from cross_layer import *
-from backward_hooks import *
 
 class LocalClassifier(torch.nn.Module):
 	def __init__(self, opt, shared):

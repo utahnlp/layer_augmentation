@@ -26,11 +26,11 @@ class Data():
 		self.ex_idx = f['ex_idx'][:].astype(np.int32)
 		self.length = self.batch_l.shape[0]
 
-		self.all_source = torch.from_numpy(self.all_source)
-		self.all_target = torch.from_numpy(self.all_target)
-		self.source = torch.from_numpy(self.source)
-		self.target = torch.from_numpy(self.target)
-		self.label = torch.from_numpy(self.label)
+		self.all_source = torch.from_numpy(self.all_source).long()
+		self.all_target = torch.from_numpy(self.all_target).long()
+		self.source = torch.from_numpy(self.source).long()
+		self.target = torch.from_numpy(self.target).long()
+		self.label = torch.from_numpy(self.label).long()
 
 		# load char_idx file
 		print('loading char idx from {0}'.format(opt.char_idx))

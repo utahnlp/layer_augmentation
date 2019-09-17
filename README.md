@@ -1,3 +1,5 @@
+<p align="center"><img width="80%" src="logo.png" /></p>
+
 Implementation of the NLI model in our ACL 2019 paper: [Augmenting Neural Networks with First-order Logic](https://arxiv.org/abs/1906.06298)
 ```
 @inproceedings{li2019augmenting,

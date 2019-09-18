@@ -76,4 +76,5 @@ For evaluation, remeber to change corresponding parameters in the ```eval.py```.
 
 
 ## Issues & To-dos
-- [ ] Add the machine comprehension model and the text chunking model.
+- [x] Add the machine comprehension model.
+- [ ] Add the text chunking model.

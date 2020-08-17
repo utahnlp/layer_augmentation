@@ -37,7 +37,7 @@ parser.add_argument('--param_init_type', help="The type of parameter initializat
 parser.add_argument('--param_init', help="The scale of the normal distribution from which weights are initialized", type=float, default=0.01)
 parser.add_argument('--clip_epoch', help="The starting epoch to enable clip", type=int, default=1)
 parser.add_argument('--clip', help="The norm2 threshold to clip, set it to negative to disable", type=float, default=-1.0)
-parser.add_argument('--ema', help="Whether to use EMA", type=int, default=1)
+parser.add_argument('--ema', help="Whether to use EMA", type=int, default=0)
 parser.add_argument('--mu', help="The mu ratio used in EMA", type=float, default=0.999)
 parser.add_argument('--adam_betas', help="The betas used in adam", default='0.9,0.999')
 parser.add_argument('--learning_rate', help="The learning rate for training", type=float, default=0.001)

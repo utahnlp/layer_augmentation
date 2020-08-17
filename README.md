@@ -28,7 +28,7 @@ python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_dev.txt --output ./data/
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_train.txt --output ./data/snli_1.0/train
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_test.txt --output ./data/snli_1.0/test
 
-python3 preprocess.py --glove ./data/glove.840B.300d.txt --dir ./data/snli_1.0/
+python3 preprocess.py --glove ./data/glove.840B.300d.txt --dir ./data/snli_1.0/ --batch_size 48
 python3 get_pretrain_vecs.py --glove ./data/glove.840B.300d.txt --dict ./data/snli_1.0/snli.word.dict --output ./data/snli_1.0/glove
 python3 get_char_idx.py --dict ./data/snli_1.0/snli.allword.dict --token_l 16 --freq 5 --output ./data/snli_1.0/char
 ```
@@ -73,6 +73,32 @@ python3 -u train.py --gpuid $GPUID --dir ./data/snli_1.0/ --train_res train.cont
 ```
 
 For evaluation, remeber to change corresponding parameters in the ```eval.py```. Expect to see accuracies as reported in our paper.
+
+
+## ConceptNet
+
+Before proceeding, please make sure you have a local instance of ConceptNet running. An example of setup can be found [here](https://www.cs.utah.edu/~tli/posts/2018/09/blog-post-3/)
+
+For extracting edges from ConceptNet, you can refer to the following code:
+```
+DATASET=train
+python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel syn --output ./data/nli_aug/conceptnet.syn.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel distinct --output ./data/nli_aug/conceptnet.distinct.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel related --output ./data/nli_aug/conceptnet.related.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel isa --output ./data/nli_aug/conceptnet.isa.txt --continu 1
+
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel all_rel --output dev
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel all_rel --output train
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel all_rel --output test
+
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --src_pos dev.sent1_pos.txt --targ_pos dev.sent2_pos.txt --output_rel content_word --output dev
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --src_pos train.sent1_pos.txt --targ_pos train.sent2_pos.txt --output_rel content_word --output train
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --src_pos test.sent1_pos.txt --targ_pos test.sent2_pos.txt --output_rel content_word --output test
+
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel excl_ant --output dev
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel excl_ant --output train
+python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel excl_ant --output test
+```
 
 
 ## Issues & To-dos

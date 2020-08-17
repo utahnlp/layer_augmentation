@@ -25,11 +25,17 @@ Besides above, make sure snli 1.0 data is unpacked to ```./data/snli_1.0/```, e.
 Also unzip the file ```./data/snli_1.0/conceptnet_rel.zip``` and put all files directly under path ```./data/snli_1.0/```.
 
 ## 0. Preprocessing
+
+First run extraction code:
 ```
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_dev.txt --output ./data/snli_1.0/dev
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_train.txt --output ./data/snli_1.0/train
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_test.txt --output ./data/snli_1.0/test
+```
+Alternatively, you can unzip the ``snli_extracted.zip`` file into ``./data/snli_1.0/`` directory. This is recommended for reproduction.
 
+Then run batching code:
+```
 python3 preprocess.py --glove ./data/glove.840B.300d.txt --dir ./data/snli_1.0/ --batch_size 48
 python3 get_pretrain_vecs.py --glove ./data/glove.840B.300d.txt --dict ./data/snli_1.0/snli.word.dict --output ./data/snli_1.0/glove
 python3 get_char_idx.py --dict ./data/snli_1.0/snli.allword.dict --token_l 16 --freq 5 --output ./data/snli_1.0/char

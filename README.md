@@ -10,7 +10,7 @@ Implementation of the NLI model in our ACL 2019 paper: [Augmenting Neural Networ
   }
 ```
 
-For the QA model, check out [here](https://github.com/utahnlp/layer_augmentation_qa).
+**For the QA model, check out [here](https://github.com/utahnlp/layer_augmentation_qa).**
 
 ## Prerequisites
 ```

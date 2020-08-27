@@ -38,6 +38,7 @@ python3 get_char_idx.py --dict ./data/snli_1.0/snli.allword.dict --token_l 16 --
 ```
 
 **preprocess on your own (requires ConceptNet installation)**
+
 Alternatively you can run the tokenization:
 ```
 python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_dev.txt --output ./data/snli_1.0/dev

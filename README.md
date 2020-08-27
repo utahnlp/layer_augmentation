@@ -24,22 +24,28 @@ Besides above, make sure snli 1.0 data is unpacked to ```./data/snli_1.0/```, e.
 
 Also unzip the file ```./data/snli_1.0/conceptnet_rel.zip``` and put all files directly under path ```./data/snli_1.0/```.
 
-## 0. Preprocessing
+## 0. Preprocessing 
 
-First run extraction code:
-```
-python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_dev.txt --output ./data/snli_1.0/dev
-python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_train.txt --output ./data/snli_1.0/train
-python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_test.txt --output ./data/snli_1.0/test
-```
-Alternatively, you can unzip the ``snli_extracted.zip`` file into ``./data/snli_1.0/`` directory. This is recommended for reproduction.
+**preprocess with cached tokenizations (recommended)**
 
-Then run batching code:
+For reproduction, it is recommended that you can unzip the ``snli_extracted.zip`` file into ``./data/snli_1.0/`` directory.
+
+Then run the batching script:
 ```
 python3 preprocess.py --glove ./data/glove.840B.300d.txt --dir ./data/snli_1.0/ --batch_size 48
 python3 get_pretrain_vecs.py --glove ./data/glove.840B.300d.txt --dict ./data/snli_1.0/snli.word.dict --output ./data/snli_1.0/glove
 python3 get_char_idx.py --dict ./data/snli_1.0/snli.allword.dict --token_l 16 --freq 5 --output ./data/snli_1.0/char
 ```
+
+**preprocess on your own (requires ConceptNet installation)**
+Alternatively you can run the tokenization:
+```
+python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_dev.txt --output ./data/snli_1.0/dev
+python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_train.txt --output ./data/snli_1.0/train
+python3 snli_extract.py --data ./data/snli_1.0/snli_1.0_test.txt --output ./data/snli_1.0/test
+```
+which will produce files with the same name as those in the ``snli_extracted.zip``. But due to the evolved SpaCy tokenizer, the tokens no longer align with the cached ``conceptnet_rel.zip`` files, so you will have to extract ConceptNet relations on your own (see the below ConceptNet section).
+
 
 ## 1. Training
 ```
@@ -90,22 +96,22 @@ Before proceeding, please make sure you have a local instance of ConceptNet runn
 For extracting edges from ConceptNet, you can refer to the following code:
 ```
 DATASET=train
-python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel syn --output ./data/nli_aug/conceptnet.syn.txt --continu 1
-python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel distinct --output ./data/nli_aug/conceptnet.distinct.txt --continu 1
-python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel related --output ./data/nli_aug/conceptnet.related.txt --continu 1
-python3 -u conceptnet.py --sent1_lemma ./data/nli_aug/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/nli_aug/${DATASET}.sent2_lemma.txt --worker 4 --rel isa --output ./data/nli_aug/conceptnet.isa.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/snli_1.0/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/snli_1.0/${DATASET}.sent2_lemma.txt --worker 4 --rel syn --output ./data/snli_1.0/conceptnet.syn.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/snli_1.0/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/snli_1.0/${DATASET}.sent2_lemma.txt --worker 4 --rel distinct --output ./data/snli_1.0/conceptnet.distinct.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/snli_1.0/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/snli_1.0/${DATASET}.sent2_lemma.txt --worker 4 --rel related --output ./data/snli_1.0/conceptnet.related.txt --continu 1
+python3 -u conceptnet.py --sent1_lemma ./data/snli_1.0/${DATASET}.sent1_lemma.txt --sent2_lemma ./data/snli_1.0/${DATASET}.sent2_lemma.txt --worker 4 --rel isa --output ./data/snli_1.0/conceptnet.isa.txt --continu 1
 
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel all_rel --output dev
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel all_rel --output train
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel all_rel --output test
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel all_rel --output dev
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel all_rel --output train
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel all_rel --output test
 
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --src_pos dev.sent1_pos.txt --targ_pos dev.sent2_pos.txt --output_rel content_word --output dev
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --src_pos train.sent1_pos.txt --targ_pos train.sent2_pos.txt --output_rel content_word --output train
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --src_pos test.sent1_pos.txt --targ_pos test.sent2_pos.txt --output_rel content_word --output test
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --src_pos dev.sent1_pos.txt --targ_pos dev.sent2_pos.txt --output_rel content_word --output dev
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --src_pos train.sent1_pos.txt --targ_pos train.sent2_pos.txt --output_rel content_word --output train
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --src_pos test.sent1_pos.txt --targ_pos test.sent2_pos.txt --output_rel content_word --output test
 
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel excl_ant --output dev
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel excl_ant --output train
-python3 constraint_preprocess.py --dir ./data/nli_aug/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel excl_ant --output test
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src dev.sent1_lemma.txt --targ dev.sent2_lemma.txt --output_rel excl_ant --output dev
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src train.sent1_lemma.txt --targ train.sent2_lemma.txt --output_rel excl_ant --output train
+python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src test.sent1_lemma.txt --targ test.sent2_lemma.txt --output_rel excl_ant --output test
 ```
 
 

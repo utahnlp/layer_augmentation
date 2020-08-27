@@ -117,5 +117,5 @@ python3 constraint_preprocess.py --dir ./data/snli_1.0/ --src test.sent1_lemma.t
 
 
 ## Issues & To-dos
-- [x] Add the machine comprehension model.
+- [x] Add the machine comprehension model [here](https://github.com/utahnlp/layer_augmentation_qa).
 - [ ] Add the text chunking model.
